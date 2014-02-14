@@ -1,4 +1,4 @@
-package org.philcluff;
+package org.philcluff.app;
 
 import org.apache.camel.main.Main;
 
@@ -13,7 +13,7 @@ public class MainApp {
     public static void main(String... args) throws Exception {
         Main main = new Main();
         main.enableHangupSupport();
-        main.addRouteBuilder(new MyRouteBuilder());
+        main.addRouteBuilder(new org.philcluff.routes.MyRouteBuilder());
         main.run(args);
     }
 
