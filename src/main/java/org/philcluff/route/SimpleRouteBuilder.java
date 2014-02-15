@@ -9,9 +9,7 @@ public class SimpleRouteBuilder extends RouteBuilder {
     @EndpointInject(ref="endpoint-in") protected Endpoint in;
     @EndpointInject(ref="endpoint-out") protected Endpoint out;
 
-    public SimpleRouteBuilder() {
-    }
-
+    // Simplest route builder - Consume from one endpoint, and produce to a different one.
     public void configure() {
         from(in)
             .to(out);

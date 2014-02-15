@@ -10,9 +10,6 @@ public class XPathChoiceRouteBuilder extends RouteBuilder {
     @EndpointInject(ref="endpoint-out-uk") protected Endpoint outUk;
     @EndpointInject(ref="endpoint-out-other") protected Endpoint outOther;
 
-    public XPathChoiceRouteBuilder() {
-    }
-
     public void configure() {
 
         from(in)
