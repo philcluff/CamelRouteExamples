@@ -10,6 +10,7 @@ public class XPathChoiceRouteBuilder extends RouteBuilder {
     @EndpointInject(ref="endpoint-out-uk") protected Endpoint outUk;
     @EndpointInject(ref="endpoint-out-other") protected Endpoint outOther;
 
+    // A simple route builder which routes messages based on a simple XPath query.
     public void configure() {
 
         from(in)
