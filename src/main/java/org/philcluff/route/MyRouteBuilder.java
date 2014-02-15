@@ -1,4 +1,4 @@
-package org.philcluff.routes;
+package org.philcluff.route;
 
 import org.apache.camel.builder.RouteBuilder;
 
