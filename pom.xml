@@ -76,7 +76,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.2.1</version>
         <configuration>
-            <mainClass>org.philcluff.MainApp</mainClass>
+            <mainClass>org.philcluff.app.MainApp</mainClass>
             <includePluginDependencies>false</includePluginDependencies>
         </configuration>
       </plugin>
