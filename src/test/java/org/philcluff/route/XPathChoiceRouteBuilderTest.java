@@ -9,6 +9,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.After;
 import org.junit.Test;
+import org.philcluff.util.TestHelper;
 
 public class XPathChoiceRouteBuilderTest extends CamelTestSupport {
 

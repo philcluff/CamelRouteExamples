@@ -1,4 +1,4 @@
-package org.philcluff.route;
+package org.philcluff.util;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -7,8 +7,6 @@ import java.lang.reflect.Field;
 
 import org.apache.camel.Endpoint;
 import org.apache.camel.EndpointInject;
-import org.apache.camel.Produce;
-import org.apache.camel.ProducerTemplate;
 
 public final class TestHelper {
 
