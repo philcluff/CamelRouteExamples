@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.philcluff</groupId>
-  <artifactId> cameldemo</artifactId>
+  <artifactId>cameldemo</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>A Camel Route</name>
+  <name>A collection of Camel Route Builder examples</name>
   <url>http://www.myorganization.org</url>
 
   <properties>
