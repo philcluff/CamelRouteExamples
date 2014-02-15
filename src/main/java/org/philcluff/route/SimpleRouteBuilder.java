@@ -1,35 +1,28 @@
 package org.philcluff.route;
 
 import org.apache.camel.Endpoint;
+import org.apache.camel.EndpointInject;
 import org.apache.camel.builder.RouteBuilder;
 
 public class SimpleRouteBuilder extends RouteBuilder {
 
-    private Endpoint in;
-    private Endpoint outNotUk;
-    private Endpoint outUk;
+    @EndpointInject(ref="endpoint-in") protected Endpoint in;
+    @EndpointInject(ref="endpoint-out-uk") protected Endpoint outUk;
+    @EndpointInject(ref="endpoint-out-other") protected Endpoint outOther;
 
-    public void SimpleRouteBuilder() {
-        // TODO: Throw Away
-    }
-
-    public void SimpleRouteBuilder(Endpoint in, Endpoint outNotUk, Endpoint outUk) {
-        this.in = in;
-        this.outNotUk =  outNotUk;
-        this.outUk = outUk;
+    public SimpleRouteBuilder() {
     }
 
     public void configure() {
 
-        // TODO: Replace with real endpoints!
-        from("file:src/data?noop=true")
+        from(in)
             .choice()
                 .when(xpath("/person/city = 'London'"))
                     .log("UK message")
-                    .to("file:target/messages/uk")
+                    .to(outUk)
                 .otherwise()
                     .log("Other message")
-                    .to("file:target/messages/others");
+                    .to(outOther);
     }
 
 }
