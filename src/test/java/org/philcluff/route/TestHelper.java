@@ -24,6 +24,7 @@ public final class TestHelper {
         }
     }
 
+    // Used to load in static test resources
     public static String getResourceAsString(String resource) throws Exception {
         InputStream inputStream = TestHelper.class.getResourceAsStream(resource);
         InputStreamReader isr = new InputStreamReader(inputStream);

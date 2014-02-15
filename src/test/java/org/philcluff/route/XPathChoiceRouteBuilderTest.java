@@ -10,9 +10,9 @@ import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.After;
 import org.junit.Test;
 
-public class SimpleRouteBuilderTest extends CamelTestSupport {
+public class XPathChoiceRouteBuilderTest extends CamelTestSupport {
 
-    private SimpleRouteBuilder underTest;
+    private XPathChoiceRouteBuilder underTest;
 
     @EndpointInject(uri = "mock:outUk") protected MockEndpoint outUk;
     @EndpointInject(uri = "mock:outOther") protected MockEndpoint outOther;
@@ -22,7 +22,7 @@ public class SimpleRouteBuilderTest extends CamelTestSupport {
 
     @Override
     protected RouteBuilder createRouteBuilder() throws IllegalAccessException {
-        underTest = new SimpleRouteBuilder();
+        underTest = new XPathChoiceRouteBuilder();
         TestHelper.injectEndpoint(underTest, "endpoint-in", in);
         TestHelper.injectEndpoint(underTest, "endpoint-out-uk", outUk);
         TestHelper.injectEndpoint(underTest, "endpoint-out-other", outOther);
@@ -38,6 +38,7 @@ public class SimpleRouteBuilderTest extends CamelTestSupport {
     public void ukMessageIsCorrectlyRouted() throws Exception {
         outUk.setExpectedMessageCount(1);
         outOther.setExpectedMessageCount(0);
+        outUk.expectedBodiesReceived(getUkMessage());
         producerTemplate.sendBody(in, getUkMessage());
     }
 
@@ -45,6 +46,7 @@ public class SimpleRouteBuilderTest extends CamelTestSupport {
     public void nonUkMessageIsCorrectlyRouted() throws Exception {
         outOther.setExpectedMessageCount(1);
         outUk.setExpectedMessageCount(0);
+        outOther.expectedBodiesReceived(getNonUkMessage());
         producerTemplate.sendBody(in, getNonUkMessage());
     }
 

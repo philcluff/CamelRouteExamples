@@ -4,13 +4,13 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.builder.RouteBuilder;
 
-public class SimpleRouteBuilder extends RouteBuilder {
+public class XPathChoiceRouteBuilder extends RouteBuilder {
 
     @EndpointInject(ref="endpoint-in") protected Endpoint in;
     @EndpointInject(ref="endpoint-out-uk") protected Endpoint outUk;
     @EndpointInject(ref="endpoint-out-other") protected Endpoint outOther;
 
-    public SimpleRouteBuilder() {
+    public XPathChoiceRouteBuilder() {
     }
 
     public void configure() {
