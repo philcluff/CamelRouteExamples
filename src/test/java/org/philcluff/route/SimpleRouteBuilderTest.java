@@ -30,7 +30,7 @@ public class SimpleRouteBuilderTest extends CamelTestSupport {
     }
 
     @Test
-    public void messageIsCorrectlyRouted() throws Exception {
+    public void itShouldRouteTheMessageToTheOutEndpoint() throws Exception {
         out.setExpectedMessageCount(1);
         out.expectedBodiesReceived(MESSAGE);
         producerTemplate.sendBody(in, MESSAGE);

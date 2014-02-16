@@ -7,7 +7,7 @@ import org.apache.camel.Handler;
 public class ExampleHandler {
 
     @Handler
-    public String handle(Exchange exchange, @Body String body) {
+    public String handle(Exchange exchange, @Body String body) throws Exception{
         return body;
     }
 

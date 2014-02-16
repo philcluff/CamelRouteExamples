@@ -45,7 +45,7 @@ public class BeanHandlerRouteBuilderTest extends CamelTestSupport {
     }
 
     @Test
-    public void messageIsCorrectlyRouted() throws Exception {
+    public void itShouldRouteTheMessageToTheOutEndpoint() throws Exception {
         // Mock out the behaviour of ExampleHandler (It returns the message body it was passed.)
         when(handler.handle(any(Exchange.class), anyString())).thenReturn(MESSAGE);
 
