@@ -5,21 +5,27 @@ import org.apache.camel.EndpointInject;
 import org.apache.camel.builder.RouteBuilder;
 import org.philcluff.handler.ExampleHandler;
 
-public class ExceptionHandlingRouteBuilder extends RouteBuilder {
+import java.io.IOException;
+
+public class MultipleExceptionHandlingRouteBuilder extends RouteBuilder {
 
     @EndpointInject(ref="endpoint-in") protected Endpoint in;
     @EndpointInject(ref="endpoint-out") protected Endpoint out;
-    @EndpointInject(ref="endpoint-error") protected Endpoint error;
+    @EndpointInject(ref="endpoint-io-error") protected Endpoint ioError;
+    @EndpointInject(ref="endpoint-other-error") protected Endpoint error;
 
     private ExampleHandler handler;
 
-    public ExceptionHandlingRouteBuilder(ExampleHandler handler) {
+    public MultipleExceptionHandlingRouteBuilder(ExampleHandler handler) {
         this.handler = handler;
     }
 
     public void configure() {
 
-        // Catch all exceptions, send to an error queue
+        onException(IOException.class)
+                .handled(true)
+                .to(ioError);
+
         onException(Throwable.class)
                 .handled(true)
                 .to(error);
