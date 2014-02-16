@@ -1,8 +1,10 @@
+* Basic route builder DONE
+* XPath choice in a basic route DONE
 * Delegation to a bean DONE
 * Exception Handling DONE
-** Single & Multiple 
-* Predicates
+** Single & Multiple DONE
 * JaxB & Marshalling
+* Predicates
 * Bean Validation
 * Better ways of testing
 ** Cucumber
