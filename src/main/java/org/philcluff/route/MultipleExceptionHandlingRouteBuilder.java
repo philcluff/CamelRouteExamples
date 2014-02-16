@@ -22,6 +22,9 @@ public class MultipleExceptionHandlingRouteBuilder extends RouteBuilder {
 
     public void configure() {
 
+        // Most specific Exception Handler catches first.
+        // All Exceptions which aren't IOException, or a direct subclass thereof,
+        // fall through to the Exception handler below.
         onException(IOException.class)
                 .handled(true)
                 .to(ioError);
