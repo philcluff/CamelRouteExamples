@@ -49,10 +49,8 @@ public class BeanHandlerRouteBuilderTest extends CamelTestSupport {
         // Mock out the behaviour of ExampleHandler (It returns the message body it was passed.)
         when(handler.handle(any(Exchange.class), anyString())).thenReturn(MESSAGE);
 
-        // Setup expectations on the mock endpoints
         out.setExpectedMessageCount(1);
         out.expectedBodiesReceived(MESSAGE);
-
         producerTemplate.sendBody(in, MESSAGE);
 
         // Check that ExampleHandler got called exactly once with the inbound message.
