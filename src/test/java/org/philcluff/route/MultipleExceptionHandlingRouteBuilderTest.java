@@ -50,17 +50,17 @@ public class MultipleExceptionHandlingRouteBuilderTest extends CamelTestSupport 
 
     @Test
     public void itShouldRouteTheMessageToTheOutEndpoint() throws Exception {
-        when(handler.handle(any(Exchange.class), anyString())).thenReturn(MESSAGE);
+        when(handler.handle(anyString())).thenReturn(MESSAGE);
         out.setExpectedMessageCount(1);
         error.setExpectedMessageCount(0);
         out.expectedBodiesReceived(MESSAGE);
         producerTemplate.sendBody(in, MESSAGE);
-        verify(handler, times(1)).handle(any(Exchange.class), eq(MESSAGE));
+        verify(handler, times(1)).handle(eq(MESSAGE));
     }
 
     @Test
     public void itShouldProduceToGenericErrorEndpointOnException() throws Exception {
-        when(handler.handle(any(Exchange.class), anyString())).thenThrow(new RuntimeException("Oh noes!"));
+        when(handler.handle(anyString())).thenThrow(new RuntimeException("Oh noes!"));
         out.setExpectedMessageCount(0);
         error.setExpectedMessageCount(1);
         ioError.setExpectedMessageCount(0);
@@ -71,12 +71,12 @@ public class MultipleExceptionHandlingRouteBuilderTest extends CamelTestSupport 
         catch (Exception e) {
             fail("Route should handle exception.");
         }
-        verify(handler, times(1)).handle(any(Exchange.class), eq(MESSAGE));
+        verify(handler, times(1)).handle(eq(MESSAGE));
     }
 
     @Test
     public void itShouldProduceToIOErrorEndpointOnIOException() throws Exception {
-        when(handler.handle(any(Exchange.class), anyString())).thenThrow(new IOException("An IO Exception happened!"));
+        when(handler.handle(anyString())).thenThrow(new IOException("An IO Exception happened!"));
         out.setExpectedMessageCount(0);
         error.setExpectedMessageCount(0);
         ioError.setExpectedMessageCount(1);
@@ -87,7 +87,7 @@ public class MultipleExceptionHandlingRouteBuilderTest extends CamelTestSupport 
         catch (Exception e) {
             fail("Route should handle exception.");
         }
-        verify(handler, times(1)).handle(any(Exchange.class), eq(MESSAGE));
+        verify(handler, times(1)).handle(eq(MESSAGE));
     }
 
     @After

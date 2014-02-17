@@ -50,18 +50,18 @@ public class ExceptionHandlingRouteBuilderTest extends CamelTestSupport {
     // Happy path test as in BeanHandlerRouteBuilderTest.
     @Test
     public void itShouldRouteTheMessageToTheOutEndpoint() throws Exception {
-        when(handler.handle(any(Exchange.class), anyString())).thenReturn(MESSAGE);
+        when(handler.handle(anyString())).thenReturn(MESSAGE);
         out.setExpectedMessageCount(1);
         error.setExpectedMessageCount(0);
         out.expectedBodiesReceived(MESSAGE);
         producerTemplate.sendBody(in, MESSAGE);
-        verify(handler, times(1)).handle(any(Exchange.class), eq(MESSAGE));
+        verify(handler, times(1)).handle(eq(MESSAGE));
     }
 
     @Test
     public void itShouldProducetoErrorEndpointOnException() throws Exception {
         // What if our Handler Bean throws?
-        when(handler.handle(any(Exchange.class), anyString())).thenThrow(new RuntimeException("Oh noes!"));
+        when(handler.handle(anyString())).thenThrow(new RuntimeException("Oh noes!"));
 
         out.setExpectedMessageCount(0);
         error.setExpectedMessageCount(1); // The message should be routed to a generic "error" endpoint.
@@ -74,7 +74,7 @@ public class ExceptionHandlingRouteBuilderTest extends CamelTestSupport {
         }
 
         // Check that ExampleHandler got called exactly once with the inbound message.
-        verify(handler, times(1)).handle(any(Exchange.class), eq(MESSAGE));
+        verify(handler, times(1)).handle(eq(MESSAGE));
     }
 
     @After

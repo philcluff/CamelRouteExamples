@@ -47,14 +47,14 @@ public class BeanHandlerRouteBuilderTest extends CamelTestSupport {
     @Test
     public void itShouldRouteTheMessageToTheOutEndpoint() throws Exception {
         // Mock out the behaviour of ExampleHandler (It returns the message body it was passed.)
-        when(handler.handle(any(Exchange.class), anyString())).thenReturn(MESSAGE);
+        when(handler.handle(anyString())).thenReturn(MESSAGE);
 
         out.setExpectedMessageCount(1);
         out.expectedBodiesReceived(MESSAGE);
         producerTemplate.sendBody(in, MESSAGE);
 
         // Check that ExampleHandler got called exactly once with the inbound message.
-        verify(handler, times(1)).handle(any(Exchange.class), eq(MESSAGE));
+        verify(handler, times(1)).handle(eq(MESSAGE));
     }
 
     @After
