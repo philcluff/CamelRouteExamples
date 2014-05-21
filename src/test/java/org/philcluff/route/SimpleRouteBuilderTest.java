@@ -9,6 +9,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.After;
 import org.junit.Test;
+import org.philcluff.util.EndpointInjecter;
 import org.philcluff.util.TestHelper;
 
 public class SimpleRouteBuilderTest extends CamelTestSupport {
@@ -24,8 +25,8 @@ public class SimpleRouteBuilderTest extends CamelTestSupport {
     @Override
     protected RouteBuilder createRouteBuilder() throws IllegalAccessException {
         underTest = new SimpleRouteBuilder();
-        TestHelper.injectEndpoint(underTest, "endpoint-in", in);
-        TestHelper.injectEndpoint(underTest, "endpoint-out", out);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-in", in);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-out", out);
         return underTest;
     }
 

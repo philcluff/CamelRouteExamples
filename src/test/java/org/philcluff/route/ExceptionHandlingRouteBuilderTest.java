@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.philcluff.handler.ExampleHandler;
+import org.philcluff.util.EndpointInjecter;
 import org.philcluff.util.TestHelper;
 
 import static org.mockito.Matchers.anyString;
@@ -36,9 +37,9 @@ public class ExceptionHandlingRouteBuilderTest extends CamelTestSupport {
     @Override
     protected RouteBuilder createRouteBuilder() throws IllegalAccessException {
         underTest = new ExceptionHandlingRouteBuilder(handler);
-        TestHelper.injectEndpoint(underTest, "endpoint-in", in);
-        TestHelper.injectEndpoint(underTest, "endpoint-out", out);
-        TestHelper.injectEndpoint(underTest, "endpoint-error", error);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-in", in);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-out", out);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-error", error);
         return underTest;
     }
 

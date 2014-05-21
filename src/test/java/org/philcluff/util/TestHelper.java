@@ -10,18 +10,6 @@ import org.apache.camel.EndpointInject;
 
 public final class TestHelper {
 
-    // This exists to inject the correct endpoints by reference into the route
-    public static void injectEndpoint(Object toInject, String ref, Endpoint endpoint) throws IllegalAccessException {
-        for (Field field : toInject.getClass().getDeclaredFields()) {
-            EndpointInject a = field.getAnnotation(EndpointInject.class);
-            if (a != null && ref.equals(a.ref())) {
-                field.setAccessible(true);
-                field.set(toInject, endpoint);
-                return;
-            }
-        }
-    }
-
     // Used to load in static test resources
     public static String getResourceAsString(String resource) throws Exception {
         InputStream inputStream = TestHelper.class.getResourceAsStream(resource);
@@ -38,5 +26,4 @@ public final class TestHelper {
         inputStream.close();
         return data.toString();
     }
-
 }

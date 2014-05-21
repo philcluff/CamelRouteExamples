@@ -7,21 +7,13 @@ import org.apache.camel.builder.RouteBuilder;
 
 public class SimpleRouteBuilder extends RouteBuilder {
 
-    public SimpleRouteBuilder(Endpoint in, Endpoint out) {
-        this.in = in;
-        this.out = out;
-    }
-
-    public SimpleRouteBuilder() {
-    }
-
     @EndpointInject(ref="endpoint-in") protected Endpoint in;
     @EndpointInject(ref="endpoint-out") protected Endpoint out;
 
     // Simplest route builder - Consume from one endpoint, and produce to a different one.
     public void configure() {
         from(in)
-                .log(LoggingLevel.WARN, "A message has been processed.")
+            .log(LoggingLevel.DEBUG, "A message is being processed....")
             .to(out);
     }
 
