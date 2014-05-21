@@ -17,10 +17,10 @@ import java.util.Map;
 
 public class MainApp {
 
-    private final static String SQS_CLIENT_NAME = "sqsClient";
-    private final static String SQS_ENDPOINT_PARAMS = "?amazonSQSClient=#" + SQS_CLIENT_NAME;
-    private final static Region SQS_REGION = Region.getRegion(Regions.EU_WEST_1);
-    public static final String CAMEL_SQS_SCHEME = "aws-sqs";
+    private static final String SQS_CLIENT_NAME = "sqsClient";
+    private static final String SQS_ENDPOINT_PARAMS = "?amazonSQSClient=#" + SQS_CLIENT_NAME;
+    private static final String CAMEL_SQS_SCHEME = "aws-sqs";
+    private static final Region SQS_REGION = Region.getRegion(Regions.EU_WEST_1);
 
     public static void main(String... args) throws Exception {
 
