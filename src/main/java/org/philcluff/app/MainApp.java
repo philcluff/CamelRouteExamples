@@ -4,10 +4,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 import org.apache.camel.CamelContext;
-import org.apache.camel.Component;
 import org.apache.camel.Endpoint;
-import org.apache.camel.component.aws.sqs.SqsComponent;
-import org.apache.camel.component.file.FileComponent;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.philcluff.route.SimpleRouteBuilder;
@@ -20,13 +17,11 @@ public class MainApp {
 
     public static void main(String... args) throws Exception {
 
-        // "aws-sqs://a" OR "file:///tmp/camel/a/"
-        String inputEndpointUri = "aws-sqs://a";
-        // "aws-sqs://b" OR "file:///tmp/camel/b/"
-        String outputEndpointUri = "file:///tmp/camel/b/";
+        String inputEndpointUri = "aws-sqs://a";            // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
+        String outputEndpointUri = "file:///tmp/camel/b/";  // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
 
         SimpleRegistry reg = setupCamelRegistryForSQS();
-        CamelContext context = getCamelContext(reg);
+        CamelContext context = new DefaultCamelContext(reg);
 
         Endpoint inputEndpoint = getEndpointByUri(inputEndpointUri, context);
         Endpoint outputEndpoint = getEndpointByUri(outputEndpointUri, context);
@@ -45,15 +40,6 @@ public class MainApp {
         return reg;
     }
 
-    private static CamelContext getCamelContext(SimpleRegistry reg) {
-        CamelContext context = new DefaultCamelContext(reg);
-        Component fileComponent = new FileComponent();
-        Component sqsComponent = new SqsComponent();
-        fileComponent.setCamelContext(context);
-        sqsComponent.setCamelContext(context);
-        return context;
-    }
-
     private static Endpoint getEndpointByUri(String uri, CamelContext context) throws Exception {
         if (uri.startsWith("aws-sqs")) {
             return context.getComponent("aws-sqs").createEndpoint(uri + SQS_ENDPOINT_PARAMS);
@@ -61,7 +47,9 @@ public class MainApp {
         else if (uri.startsWith("file")) {
             return context.getComponent("file").createEndpoint(uri);
         }
-        return null;
+        else {
+            throw new UnsupportedOperationException("Unsupported endpoint: " + uri);
+        }
     }
 
 }
