@@ -19,6 +19,7 @@ public class MainApp {
     private final static String SQS_CLIENT_NAME = "sqsClient";
     private final static String SQS_ENDPOINT_PARAMS = "?amazonSQSClient=#" + SQS_CLIENT_NAME;
     private final static Region SQS_REGION = Region.getRegion(Regions.EU_WEST_1);
+    public static final String CAMEL_SQS_SCHEME = "aws-sqs";
 
     public static void main(String... args) throws Exception {
 
@@ -54,8 +55,8 @@ public class MainApp {
     }
 
     private static Endpoint getEndpointByUri(String uri, CamelContext context) throws Exception {
-        if (uri.startsWith("aws-sqs")) {
-            return context.getComponent("aws-sqs").createEndpoint(uri + SQS_ENDPOINT_PARAMS);
+        if (uri.startsWith(CAMEL_SQS_SCHEME)) {
+            return context.getComponent(CAMEL_SQS_SCHEME).createEndpoint(uri + SQS_ENDPOINT_PARAMS);
         }
         else {
             return context.getComponent(new URI(uri).getScheme()).createEndpoint(uri);

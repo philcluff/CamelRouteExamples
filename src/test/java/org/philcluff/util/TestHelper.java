@@ -26,5 +26,4 @@ public final class TestHelper {
         inputStream.close();
         return data.toString();
     }
-
 }
