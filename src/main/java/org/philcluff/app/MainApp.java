@@ -4,6 +4,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Component;
 import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
@@ -59,7 +60,11 @@ public class MainApp {
             return context.getComponent(CAMEL_SQS_SCHEME).createEndpoint(uri + SQS_ENDPOINT_PARAMS);
         }
         else {
-            return context.getComponent(new URI(uri).getScheme()).createEndpoint(uri);
+            Component component = context.getComponent(new URI(uri).getScheme());
+            if (null == component) {
+                throw new UnsupportedOperationException("No such endpoint has been loaded by Camel for URI: " + uri);
+            }
+            return component.createEndpoint(uri);
         }
     }
 
