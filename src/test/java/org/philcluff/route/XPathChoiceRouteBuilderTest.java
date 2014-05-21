@@ -9,6 +9,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.After;
 import org.junit.Test;
+import org.philcluff.util.EndpointInjecter;
 import org.philcluff.util.TestHelper;
 
 public class XPathChoiceRouteBuilderTest extends CamelTestSupport {
@@ -24,9 +25,9 @@ public class XPathChoiceRouteBuilderTest extends CamelTestSupport {
     @Override
     protected RouteBuilder createRouteBuilder() throws IllegalAccessException {
         underTest = new XPathChoiceRouteBuilder();
-        TestHelper.injectEndpoint(underTest, "endpoint-in", in);
-        TestHelper.injectEndpoint(underTest, "endpoint-out-uk", outUk);
-        TestHelper.injectEndpoint(underTest, "endpoint-out-other", outOther);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-in", in);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-out-uk", outUk);
+        EndpointInjecter.injectEndpoint(underTest, "endpoint-out-other", outOther);
         return underTest;
     }
 

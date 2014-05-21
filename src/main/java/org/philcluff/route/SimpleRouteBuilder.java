@@ -7,14 +7,6 @@ import org.apache.camel.builder.RouteBuilder;
 
 public class SimpleRouteBuilder extends RouteBuilder {
 
-    public SimpleRouteBuilder(Endpoint in, Endpoint out) {
-        this.in = in;
-        this.out = out;
-    }
-
-    public SimpleRouteBuilder() {
-    }
-
     @EndpointInject(ref="endpoint-in") protected Endpoint in;
     @EndpointInject(ref="endpoint-out") protected Endpoint out;
 

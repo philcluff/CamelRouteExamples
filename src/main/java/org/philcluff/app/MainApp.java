@@ -8,8 +8,11 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.philcluff.route.SimpleRouteBuilder;
+import org.philcluff.util.EndpointInjecter;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainApp {
 
@@ -19,19 +22,27 @@ public class MainApp {
 
     public static void main(String... args) throws Exception {
 
-        String inputEndpointUri = "file:///tmp/camel/a/";   // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
-        String outputEndpointUri = "file:///tmp/camel/b/";  // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
+        Map<String, String> endpointMappings = new HashMap<>();
+        endpointMappings.put("endpoint-in", "aws-sqs://a");           // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
+        endpointMappings.put("endpoint-out", "file:///tmp/camel/b/"); // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
 
         SimpleRegistry reg = setupCamelRegistryForSQS();
         CamelContext context = new DefaultCamelContext(reg);
 
-        Endpoint inputEndpoint = getEndpointByUri(inputEndpointUri, context);
-        Endpoint outputEndpoint = getEndpointByUri(outputEndpointUri, context);
+        // What I really wanted to do here was add all the routes first, then inject all endpoints in one go.
+        // No such luck :(
+        SimpleRouteBuilder routeBuilder = new SimpleRouteBuilder();
+        injectEndpoints(endpointMappings, routeBuilder, context);
+        context.addRoutes(routeBuilder);
 
-        context.addRoutes(new SimpleRouteBuilder(inputEndpoint, outputEndpoint));
         context.start();
         Thread.currentThread().join();
+    }
 
+    private static void injectEndpoints(Map<String, String> endpointMappings, Object route, CamelContext context) throws Exception {
+        for (Map.Entry endpointReference : endpointMappings.entrySet()) {
+            EndpointInjecter.injectEndpoint(route, endpointReference.getKey().toString(), getEndpointByUri(endpointReference.getValue().toString(), context));
+        }
     }
 
     private static SimpleRegistry setupCamelRegistryForSQS() {
