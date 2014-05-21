@@ -3,17 +3,17 @@ package org.philcluff.app;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQSClient;
-import org.apache.camel.CamelContext;
-import org.apache.camel.Component;
-import org.apache.camel.Endpoint;
+import org.apache.camel.*;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.philcluff.route.SimpleRouteBuilder;
 import org.philcluff.util.EndpointInjecter;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class MainApp {
 
@@ -25,8 +25,8 @@ public class MainApp {
     public static void main(String... args) throws Exception {
 
         Map<String, String> endpointMappings = new HashMap<>();
-        endpointMappings.put("endpoint-in", "aws-sqs://a");           // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
-        endpointMappings.put("endpoint-out", "file:///tmp/camel/b/"); // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
+        endpointMappings.put("endpoint-in", "aws-sqs://a" + SQS_ENDPOINT_PARAMS);           // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
+        endpointMappings.put("endpoint-out", "aws-sqs://b" + SQS_ENDPOINT_PARAMS);          // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
 
         SimpleRegistry reg = setupCamelRegistryForSQS();
         CamelContext context = new DefaultCamelContext(reg);
@@ -38,6 +38,11 @@ public class MainApp {
         context.addRoutes(routeBuilder);
 
         context.start();
+
+        // Send a message via Producer Template to our input endpoint.
+        ProducerTemplate t = context.createProducerTemplate();
+        t.sendBody(endpointMappings.get("endpoint-in"), "Off we go then! " + UUID.randomUUID() + " " + new Date().toString());
+
         Thread.currentThread().join();
     }
 
@@ -56,16 +61,11 @@ public class MainApp {
     }
 
     private static Endpoint getEndpointByUri(String uri, CamelContext context) throws Exception {
-        if (uri.startsWith(CAMEL_SQS_SCHEME)) {
-            return context.getComponent(CAMEL_SQS_SCHEME).createEndpoint(uri + SQS_ENDPOINT_PARAMS);
+        Component component = context.getComponent(new URI(uri).getScheme());
+        if (null == component) {
+            throw new UnsupportedOperationException("No such endpoint has been loaded by Camel for URI: " + uri);
         }
-        else {
-            Component component = context.getComponent(new URI(uri).getScheme());
-            if (null == component) {
-                throw new UnsupportedOperationException("No such endpoint has been loaded by Camel for URI: " + uri);
-            }
-            return component.createEndpoint(uri);
-        }
+        return component.createEndpoint(uri);
     }
 
 }

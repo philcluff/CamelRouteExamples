@@ -13,7 +13,7 @@ public class SimpleRouteBuilder extends RouteBuilder {
     // Simplest route builder - Consume from one endpoint, and produce to a different one.
     public void configure() {
         from(in)
-            .log(LoggingLevel.DEBUG, "A message is being processed....")
+            .log(LoggingLevel.INFO, "A message is being processed....")
             .to(out);
     }
 
