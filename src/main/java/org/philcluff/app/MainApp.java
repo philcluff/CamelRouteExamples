@@ -9,6 +9,8 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.philcluff.route.SimpleRouteBuilder;
 
+import java.net.URI;
+
 public class MainApp {
 
     private final static String SQS_CLIENT_NAME = "sqsClient";
@@ -17,7 +19,7 @@ public class MainApp {
 
     public static void main(String... args) throws Exception {
 
-        String inputEndpointUri = "aws-sqs://a";            // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
+        String inputEndpointUri = "file:///tmp/camel/a/";   // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
         String outputEndpointUri = "file:///tmp/camel/b/";  // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
 
         SimpleRegistry reg = setupCamelRegistryForSQS();
@@ -44,11 +46,8 @@ public class MainApp {
         if (uri.startsWith("aws-sqs")) {
             return context.getComponent("aws-sqs").createEndpoint(uri + SQS_ENDPOINT_PARAMS);
         }
-        else if (uri.startsWith("file")) {
-            return context.getComponent("file").createEndpoint(uri);
-        }
         else {
-            throw new UnsupportedOperationException("Unsupported endpoint: " + uri);
+            return context.getComponent(new URI(uri).getScheme()).createEndpoint(uri);
         }
     }
 
