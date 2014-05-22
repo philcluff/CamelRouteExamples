@@ -19,13 +19,15 @@ public class MainApp {
 
     private static final String SQS_CLIENT_NAME = "sqsClient";
     private static final String SQS_ENDPOINT_PARAMS = "?amazonSQSClient=#" + SQS_CLIENT_NAME;
-    private static final String CAMEL_SQS_SCHEME = "aws-sqs";
     private static final Region SQS_REGION = Region.getRegion(Regions.EU_WEST_1);
 
     public static void main(String... args) throws Exception {
 
         Map<String, String> endpointMappings = new HashMap<>();
-        endpointMappings.put("endpoint-in", "aws-sqs://a" + SQS_ENDPOINT_PARAMS);           // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
+//        endpointMappings.put("endpoint-in", "aws-sqs://a" + SQS_ENDPOINT_PARAMS);           // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
+//        endpointMappings.put("endpoint-out", "aws-sqs://b" + SQS_ENDPOINT_PARAMS);          // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
+
+        endpointMappings.put("endpoint-in", "vm:a");           // EG: "aws-sqs://a" OR "file:///tmp/camel/a/"
         endpointMappings.put("endpoint-out", "aws-sqs://b" + SQS_ENDPOINT_PARAMS);          // EG: "aws-sqs://b" OR "file:///tmp/camel/b/"
 
         SimpleRegistry reg = setupCamelRegistryForSQS();
@@ -36,6 +38,11 @@ public class MainApp {
         SimpleRouteBuilder routeBuilder = new SimpleRouteBuilder();
         injectEndpoints(endpointMappings, routeBuilder, context);
         context.addRoutes(routeBuilder);
+
+        // For certain endpoints (vm, direct, seda), it is important that the endpoint makes it into the endpoint registry.
+        for (Map.Entry endpoint : endpointMappings.entrySet()) {
+            context.addEndpoint(endpoint.getValue().toString(), getEndpointByUri(endpoint.getValue().toString(), context));
+        }
 
         context.start();
 
